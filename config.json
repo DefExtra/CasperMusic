@@ -1,0 +1,55 @@
+{
+  "activity": {
+        "name": "scary touns | c?help | /help",
+        "type": "LISTENING"
+    },
+    "status": "idle",
+  
+    "accessCode": "casper_is_ready",
+    "token": "",
+    "prefix": "",
+  
+    "lavaLink": {
+        "host": "nonssl.freelavalink.ga",
+        "password": "www.freelavalink.ga",
+        "port": 80,
+        "secure": false
+    },
+    "dashboard": {
+        "port": 0,
+        "secret": "",
+        "id": "",
+        "callback": "",
+        "domain": ""
+    },
+    "spotify": {
+        "clientID": "c89bbfe7180a49b38baff8bf49cfbee3",
+        "clientSecret": "d9eaf1f79a3e448ab76ef59dbc75e6c7"
+    },
+    "emojis": {
+        "noteBlock": "⏹️",
+        "plus": "➕",
+        "doneBlock": "▇",
+        "dinotdoneBlock": "—",
+        "presentage": "%",
+        "casperEmoji": "👻",
+        "x": "❌",
+        "soon": "👀",
+        "back": "⏮️",
+        "pause_and_unpause": "⏯️",
+        "skip": "⏭️",
+        "loop": "🔂",
+        "volDown": "🔉",
+        "seekBack": "⏪",
+        "seekGo": "⏩",
+        "volUp": "🔊",
+        "stop": "⏹️"
+    },
+    "images": {
+        "quickPlay": "https://cdn.discordapp.com/attachments/612562696268677123/1054373118166188092/6246397fdcbdcfb349b18dd9_black-ghost-audio.png",
+        "adminMenu": "https://cdn.discordapp.com/attachments/612562696268677123/1054373118166188092/6246397fdcbdcfb349b18dd9_black-ghost-audio.png",
+        "utilsMenu": "https://cdn.discordapp.com/attachments/612562696268677123/1054373118166188092/6246397fdcbdcfb349b18dd9_black-ghost-audio.png",
+        "musicMenu": "https://cdn.discordapp.com/attachments/612562696268677123/1054373118166188092/6246397fdcbdcfb349b18dd9_black-ghost-audio.png",
+        "helpMenu": "https://cdn.discordapp.com/attachments/612562696268677123/1054373118166188092/6246397fdcbdcfb349b18dd9_black-ghost-audio.png"
+    }
+}
