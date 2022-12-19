@@ -1,0 +1,301 @@
+// "use strict";
+// var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+//     if (k2 === undefined) k2 = k;
+//     var desc = Object.getOwnPropertyDescriptor(m, k);
+//     if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+//       desc = { enumerable: true, get: function() { return m[k]; } };
+//     }
+//     Object.defineProperty(o, k2, desc);
+// }) : (function(o, m, k, k2) {
+//     if (k2 === undefined) k2 = k;
+//     o[k2] = m[k];
+// }));
+// var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+//     Object.defineProperty(o, "default", { enumerable: true, value: v });
+// }) : function(o, v) {
+//     o["default"] = v;
+// });
+// var __importStar = (this && this.__importStar) || function (mod) {
+//     if (mod && mod.__esModule) return mod;
+//     var result = {};
+//     if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+//     __setModuleDefault(result, mod);
+//     return result;
+// };
+// var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+//     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+//     return new (P || (P = Promise))(function (resolve, reject) {
+//         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+//         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+//         function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+//         step((generator = generator.apply(thisArg, _arguments || [])).next());
+//     });
+// };
+// var __importDefault = (this && this.__importDefault) || function (mod) {
+//     return (mod && mod.__esModule) ? mod : { "default": mod };
+// };
+// Object.defineProperty(exports, "__esModule", { value: true });
+// const discord_js_1 = require("discord.js");
+// const BaseCommand_1 = __importDefault(require("../../utils/structures/BaseCommand"));
+// const axios_1 = __importDefault(require("axios"));
+// const replys_json_1 = __importDefault(require("../../../replys.json"));
+// const commandName = "tiktok";
+// class PingCommand extends BaseCommand_1.default {
+//     constructor() {
+//         super(commandName, "base", ["tk"], {
+//             name: commandName,
+//             description: "get tiktok video information",
+//             type: "CHAT_INPUT",
+//             options: [
+//                 {
+//                     name: "url",
+//                     description: "the tiktok url",
+//                     requierd: true,
+//                     type: "STRING",
+//                 },
+//             ],
+//         });
+//     }
+//     run(client, interaction, message, args, author) {
+//         return __awaiter(this, void 0, void 0, function* () {
+//             // the base you will use it to reply, acess the user object etc...
+//             let base = message ? message : interaction;
+//             let lang = (yield Promise.resolve().then(() => __importStar(require("quick.db")))).fetch(`Lang_${base.guildId}`) || "en";
+//             let replys = replys_json_1.default[lang];
+//             let option;
+//             if (message == null)
+//                 option = interaction.options.getString("url");
+//             else
+//                 option = args[0];
+//             // the code
+//             try {
+//                 console.log(option);
+//                 if (!option || option == null) {
+//                     if (interaction == null)
+//                         message
+//                             .edit({
+//                             content: replys.noArgTikTok,
+//                         })
+//                             .catch(() => { });
+//                     else if (message == null)
+//                         interaction
+//                             .editReply({
+//                             content: replys.noArgTikTok,
+//                         })
+//                             .catch(() => { });
+//                     return;
+//                 }
+//                 const axiosData = yield axios_1.default.get(`https://godownloader.com/api/tiktok-no-watermark-free?url=${option}&key=godownloader.com`);
+//                 let video = new discord_js_1.MessageButton()
+//                     .setCustomId("video")
+//                     .setStyle("DANGER")
+//                     .setLabel("Video");
+//                 let music = new discord_js_1.MessageButton()
+//                     .setCustomId("music")
+//                     .setStyle("SECONDARY")
+//                     .setLabel("Music");
+//                 let row = new discord_js_1.MessageActionRow().addComponents(video, music);
+//                 if (interaction == null) {
+//                     let MeSsAgE = yield message.edit({
+//                         content: "Data Has Been **Processed**!\nPlease Choose The Option Of Data Preview",
+//                         components: [row],
+//                         allowedMentions: {
+//                             repliedUser: false,
+//                         },
+//                     });
+//                     let collector = yield MeSsAgE.createMessageComponentCollector({
+//                         filter: (i) => i.user.id == author.id,
+//                         time: 1000 * 60,
+//                     });
+//                     collector.on("collect", (i) => __awaiter(this, void 0, void 0, function* () {
+//                         var _a, _b;
+//                         yield i.deferUpdate().catch(() => { });
+//                         if (i.customId == "video") {
+//                             let embed = new discord_js_1.MessageEmbed().setColor("#4458F7")
+//                                 .setColor("BLUE")
+//                                 .setDescription(`**\`\`\`\n${axiosData.data.desc || null}\n\`\`\`**`)
+//                                 .setThumbnail(axiosData.data.author_cover ||
+//                                 ((_a = client.user) === null || _a === void 0 ? void 0 : _a.avatarURL({
+//                                     dynamic: true,
+//                                 })))
+//                                 .addFields({
+//                                 name: "**Video Conver:**",
+//                                 value: `**[animated](${axiosData.data.video_animated_cover}) | [origin](${axiosData.data.video_origin_cover})**`,
+//                                 inline: true,
+//                             }, {
+//                                 name: "**Video Download:**",
+//                                 value: `**[with coprights](${axiosData.data.video_watermark}) | [without copyrights](${axiosData.data.video_no_watermark})**`,
+//                                 inline: true,
+//                             });
+//                             let btn = new discord_js_1.MessageButton()
+//                                 .setCustomId("preview")
+//                                 .setStyle("DANGER")
+//                                 .setLabel("Preview The Video");
+//                             let videoRow = new discord_js_1.MessageActionRow().addComponents(btn);
+//                             let videoMessage = yield MeSsAgE.edit({
+//                                 embeds: [embed],
+//                                 components: [videoRow],
+//                             });
+//                             let collector = yield videoMessage.createMessageComponentCollector({
+//                                 filter: (i) => i.user.id == author.id,
+//                                 time: 1000 * 60,
+//                             });
+//                             collector.on("collect", (i) => __awaiter(this, void 0, void 0, function* () {
+//                                 yield i.deferUpdate().catch(() => { });
+//                                 i.followUp({
+//                                     ephemeral: true,
+//                                     content: replys.thisCommandIsUnderDevelop,
+//                                 });
+//                                 //   i.followUp({
+//                                 //     ephemeral: true,
+//                                 //     files: [
+//                                 //       {
+//                                 //         name: "casper.mp4",
+//                                 //         attachment: axiosData.data.video_no_watermark,
+//                                 //       },
+//                                 //     ],
+//                                 //   });
+//                             }));
+//                         }
+//                         else if (i.customId == "music") {
+//                             let embed = new discord_js_1.MessageEmbed().setColor("#4458F7")
+//                                 .setColor("BLUE")
+//                                 .setDescription(`**\`\`\`\n${axiosData.data.music_author || null}\n\`\`\`**`)
+//                                 .setThumbnail(axiosData.data.music_cover ||
+//                                 ((_b = client.user) === null || _b === void 0 ? void 0 : _b.avatarURL({
+//                                     dynamic: true,
+//                                 })))
+//                                 .addFields({
+//                                 name: "**Music Url:**",
+//                                 value: `**[Here](${axiosData.data.music_url})**`,
+//                                 inline: true,
+//                             });
+//                             let btn = new discord_js_1.MessageButton()
+//                                 .setCustomId("play")
+//                                 .setStyle("DANGER")
+//                                 .setLabel("Play The Music");
+//                             let playRow = new discord_js_1.MessageActionRow().addComponents(btn);
+//                             let musicMessage = yield MeSsAgE.edit({
+//                                 embeds: [embed],
+//                                 components: [playRow],
+//                             });
+//                             let collector = yield musicMessage.createMessageComponentCollector({
+//                                 filter: (i) => i.user.id == author.id,
+//                                 time: 1000 * 60,
+//                             });
+//                             collector.on("collect", (i) => __awaiter(this, void 0, void 0, function* () {
+//                                 yield i.deferUpdate().catch(() => { });
+//                                 i.followUp({
+//                                     ephemeral: true,
+//                                     content: replys.thisCommandIsUnderDevelop,
+//                                 });
+//                             }));
+//                         }
+//                     }));
+//                 }
+//                 else if (interaction !== null) {
+//                     let MeSsAgE = yield interaction.editReply({
+//                         content: "Data Has Been **Processed**!\nPlease Choose The Option Of Data Preview",
+//                         components: [row],
+//                         allowedMentions: {
+//                             repliedUser: false,
+//                         },
+//                     });
+//                     let collector = yield MeSsAgE.createMessageComponentCollector({
+//                         filter: (i) => i.user.id == author.id,
+//                         time: 1000 * 60,
+//                     });
+//                     collector.on("collect", (i) => __awaiter(this, void 0, void 0, function* () {
+//                         var _c, _d;
+//                         yield i.deferUpdate().catch(() => { });
+//                         if (i.customId == "video") {
+//                             let embed = new discord_js_1.MessageEmbed().setColor("#4458F7")
+//                                 .setColor("BLUE")
+//                                 .setDescription(`**\`\`\`\n${axiosData.data.desc || null}\n\`\`\`**`)
+//                                 .setThumbnail(axiosData.data.author_cover ||
+//                                 ((_c = client.user) === null || _c === void 0 ? void 0 : _c.avatarURL({
+//                                     dynamic: true,
+//                                 })))
+//                                 .addFields({
+//                                 name: "**Video Conver:**",
+//                                 value: `**[animated](${axiosData.data.video_animated_cover}) | [origin](${axiosData.data.video_origin_cover})**`,
+//                                 inline: true,
+//                             }, {
+//                                 name: "**Video Download:**",
+//                                 value: `**[with coprights](${axiosData.data.video_watermark}) | [without copyrights](${axiosData.data.video_no_watermark})**`,
+//                                 inline: true,
+//                             });
+//                             let btn = new discord_js_1.MessageButton()
+//                                 .setCustomId("preview")
+//                                 .setStyle("DANGER")
+//                                 .setLabel("Preview The Video");
+//                             let videoRow = new discord_js_1.MessageActionRow().addComponents(btn);
+//                             let videoMessage = yield interaction.editReply({
+//                                 embeds: [embed],
+//                                 components: [videoRow],
+//                             });
+//                             let collector = yield videoMessage.createMessageComponentCollector({
+//                                 filter: (i) => i.user.id == author.id,
+//                                 time: 1000 * 60,
+//                             });
+//                             collector.on("collect", (i) => __awaiter(this, void 0, void 0, function* () {
+//                                 yield i.deferUpdate().catch(() => { });
+//                                 i.followUp({
+//                                     ephemeral: true,
+//                                     content: replys.thisCommandIsUnderDevelop,
+//                                 });
+//                                 //   i.followUp({
+//                                 //     ephemeral: true,
+//                                 //     files: [
+//                                 //       {
+//                                 //         name: "casper.mp4",
+//                                 //         attachment: axiosData.data.video_no_watermark,
+//                                 //       },
+//                                 //     ],
+//                                 //   });
+//                             }));
+//                         }
+//                         else if (i.customId == "music") {
+//                             let embed = new discord_js_1.MessageEmbed().setColor("#4458F7")
+//                                 .setColor("BLUE")
+//                                 .setDescription(`**\`\`\`\n${axiosData.data.music_author || null}\n\`\`\`**`)
+//                                 .setThumbnail(axiosData.data.music_cover ||
+//                                 ((_d = client.user) === null || _d === void 0 ? void 0 : _d.avatarURL({
+//                                     dynamic: true,
+//                                 })))
+//                                 .addFields({
+//                                 name: "**Music Url:**",
+//                                 value: `**[Here](${axiosData.data.music_url})**`,
+//                                 inline: true,
+//                             });
+//                             let btn = new discord_js_1.MessageButton()
+//                                 .setCustomId("play")
+//                                 .setStyle("DANGER")
+//                                 .setLabel("Play The Music");
+//                             let playRow = new discord_js_1.MessageActionRow().addComponents(btn);
+//                             let musicMessage = yield interaction.editReply({
+//                                 embeds: [embed],
+//                                 components: [playRow],
+//                             });
+//                             let collector = yield musicMessage.createMessageComponentCollector({
+//                                 filter: (i) => i.user.id == author.id,
+//                                 time: 1000 * 60,
+//                             });
+//                             collector.on("collect", (i) => __awaiter(this, void 0, void 0, function* () {
+//                                 yield i.deferUpdate().catch(() => { });
+//                                 i.followUp({
+//                                     ephemeral: true,
+//                                     content: replys.thisCommandIsUnderDevelop,
+//                                 }).catch(() => { });
+//                             }));
+//                         }
+//                     }));
+//                 }
+//             }
+//             catch (error) {
+//                 console.log(error);
+//             }
+//         });
+//     }
+// }
+// exports.default = PingCommand;
